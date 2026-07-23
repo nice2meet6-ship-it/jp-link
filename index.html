@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>일본어 학습앱 바로가기</title>
+<style>
+  body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+    font-family:system-ui,-apple-system,"Malgun Gothic",sans-serif;
+    background:linear-gradient(160deg,#fdf3f3,#eef3fb); }
+  .card { text-align:center; padding:44px 36px; background:#fff; border-radius:20px;
+    box-shadow:0 10px 40px rgba(80,90,120,.12); max-width:320px; }
+  .emoji { font-size:44px; }
+  h1 { font-size:19px; margin:14px 0 6px; color:#2b3040; }
+  p { font-size:13px; color:#8a90a0; margin:0 0 22px; line-height:1.6; }
+  .spin { width:26px; height:26px; border:3px solid #e8ebf3; border-top-color:#e07b8a;
+    border-radius:50%; margin:0 auto 18px; animation:s .8s linear infinite; }
+  @keyframes s { to { transform:rotate(360deg); } }
+  a.btn { display:inline-block; padding:12px 26px; background:#e07b8a; color:#fff;
+    text-decoration:none; border-radius:12px; font-size:14px; font-weight:700; }
+  .err { color:#c0392b; font-size:12.5px; display:none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="emoji">🌸</div>
+  <h1>일본어 학습앱으로 이동 중…</h1>
+  <p>잠시만 기다려 주세요.<br>자동으로 이동하지 않으면 아래 버튼을 눌러 주세요.</p>
+  <div class="spin" id="spin"></div>
+  <a class="btn" id="go" href="#" style="display:none">앱 열기</a>
+  <p class="err" id="err">주소를 불러오지 못했어요.<br>잠시 후 새로고침(⟳) 해 주세요.</p>
+</div>
+<script>
+const RAW = "https://raw.githubusercontent.com/nice2meet6-ship-it/jp-link/main/url.txt";
+fetch(RAW + "?t=" + Date.now(), {cache:"no-store"})
+  .then(r => r.text())
+  .then(t => {
+    const url = t.trim().split("\n")[0];
+    if (!/^https:\/\/[a-z0-9-]+\.trycloudflare\.com/.test(url)) throw new Error("bad url");
+    const go = document.getElementById("go");
+    go.href = url; go.style.display = "inline-block";
+    setTimeout(() => location.replace(url), 800);
+  })
+  .catch(() => {
+    document.getElementById("spin").style.display = "none";
+    document.getElementById("err").style.display = "block";
+  });
+</script>
+</body>
+</html>
